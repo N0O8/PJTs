@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * Created by jikhan.woo on 2017-08-18.
@@ -30,21 +32,26 @@ class Solve_CodeJam_02
         try
         {
             BufferedReader br = new BufferedReader(new FileReader(file));
-
-            int T = br.read();
+            FileWriter out = new FileWriter(filename.substring(0, filename.length()-3).concat(".out"));
+            int T = Integer.parseInt(br.readLine());
+            StringTokenizer token;
 
             for(int z = 0; z < T; z++)
             {
-                int N = br.read();
+                int N = Integer.parseInt(br.readLine());
                 int[][] map = new int[N][2];
                 double min_val = 987654321.0;
                 long min_perimeter = 987654321;
 
                 for (int i = 0; i < N; i++)
                 {
-                    map[i][0] = br.read();
-                    map[i][1] = br.read();
-                    System.out.println(map[i][0] + " " + map[i][1]);
+                    String temp = br.readLine();
+                    token = new StringTokenizer(temp, " ");
+
+                    for (int j = 0; token.hasMoreTokens(); j++) {
+                        map[i][0] = Integer.parseInt(token.nextToken());
+                        map[i][1] = Integer.parseInt(token.nextToken());
+                    }
                 }
 
                 for (int i = 0; i < N; i++)
@@ -75,11 +82,12 @@ class Solve_CodeJam_02
                     }
                 }
 
-                System.out.println(Long.toUnsignedString(min_perimeter));
+                out.write(Long.toUnsignedString(min_perimeter));
+                out.write("\n");
             }
+            br.close();
+            out.close();
         } catch (Exception e) {}
-
-
     }
 }
 
