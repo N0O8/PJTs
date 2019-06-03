@@ -12,7 +12,7 @@ var exports = module.exports = {};
 
 exports.get_chatlist = function()
 {	
-	connection.query('SELECT * FROM chat', function (error, results, fields) {
+	connection.query('SELECT user_name, content FROM (SELECT * FROM chat order by Date desc limit 10)TMP order by Date asc', function (error, results, fields) {
 		chatlist = "";
 		if (error) {
 			console.log(error);
