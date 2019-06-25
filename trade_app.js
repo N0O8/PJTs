@@ -1,50 +1,15 @@
 var history = require('./libs/history.js');
 var trade = require('./libs/trade.js');
-var http = require('http');
-var qs = require('querystring');
-var url = require('url');
-var host = '0.0.0.0';
-var port = 3000;
-var address = "http://localhost:3000";
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-var app = http.createServer(function(request, response){
-	  var _url = request.url;
-	  var queryData = url.parse(_url, true).query;
+var port = process.env.PORT || 3000;
 
-	  if(_url == '/'){
-		      response.writeHead(200);
-		      var home = `
-		        <html>
-			          <head></head>
-			          <body>
-			            <a href = "/history">history</a>
-			            <br>
-			            <a href = "/trade">trade</a>
-			          </body>
-			        </html>
-			      `;
-		      response.end(home);
-		    }
-	  else if(_url == '/history')
-		  {
-		      history.set_buylist('123');
-		      history.update_buylist();
-		      history.get_buylist();
+var connection = require('./libs/connection')(app);
 
-		      response.writeHead(302, {'Location' : address});
-		      response.end();
-		    }
-	  else if(_url == '/trade')
-		  {
-		      trade.set_buylist();
-		      trade.update_buylist();
-		      trade.get_buylist();
-
-		      response.writeHead(302, {'Location' : address});
-		      response.end();
-		    }
-});
-
-app.listen(port, host);
-
+app.listen(3000);
+console.log('Listening on port 3000...');
