@@ -79,6 +79,5 @@ module.exports = function(app)
 		            res.status(204).end();
 		        });
 
-	    console.log("CRD finished");
+	    console.log("CRUD finished");
 }
-
