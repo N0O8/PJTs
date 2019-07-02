@@ -59,6 +59,15 @@ module.exports = function(app)
 				        });
 		        });
 
+	    // UPDATE
+	    app.put('/template/update', function(req, res){
+	          Stock.findOneAndUpdate({name: req.body.name}, {Date: req.body.date}, {new: true, useFindAndModify: false}, function(err, template){
+			          if(err) return res.status(500).json({error: err});
+			          if(!template) return res.status(404).json({error: 'data not found'});
+			          res.json({message: 'data updated'});
+			        });
+	        });
+
 	    // DELETE
 	    app.delete('/template/:name', function(req, res){
 		          Stock.remove({name: req.params.name}, function(err, output){
