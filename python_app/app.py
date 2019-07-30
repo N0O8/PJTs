@@ -4,9 +4,20 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import  *
 from PyQt5.QAxContainer import *
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import *
+
+class Kiwoom_OpenAPI(QAxWidget):
+    def __init__(self):
+        super().__init__()
+        self.setControl("KHOPENAPI.KHOpenAPICtrl.1")
 
 
-class Ui_MainWindow(QAxWidget):
+class Ui_MainWindow(Kiwoom_OpenAPI):
+    def __init__(self):
+        super().__init__()
+        self.account_thread = AccountThread()
+        self.account_thread.finished.connect(self.update_accountdata)
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.NonModal)
@@ -866,7 +877,6 @@ class Ui_MainWindow(QAxWidget):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         # Kiwoom Login
-        self.setControl("KHOPENAPI.KHOpenAPICtrl.1")
         self.dynamicCall("CommConnect()")
 
         # OpenAPI+ Event
@@ -1049,40 +1059,51 @@ class Ui_MainWindow(QAxWidget):
     def event_connect(self, err_code):
         if err_code == 0:
             print("로그인 성공")
-            account_num = self.dynamicCall("GetLoginInfo(QString)", ["ACCNO"])
-            print("계좌번호: " + account_num.rstrip(';'))
-
-            self.dynamicCall("SetInputValue(QString, QString)", "계좌번호"	,  account_num.rstrip(';'))
-            self.dynamicCall("SetInputValue(QString, QString)", "비밀번호"	,  "")
-            self.dynamicCall("SetInputValue(QString, QString)", "상장폐지조회구분"	,  "0")
-            self.dynamicCall("SetInputValue(QString, QString)", "비밀번호입력매체구분"	,  "00")
-            self.dynamicCall("CommRqData(QString, QString, int, QString)", "opw00004_req", "OPW00004", 0, "0101")
+            self.account_num = self.dynamicCall("GetLoginInfo(QString)", ["ACCNO"])
+            print("계좌번호: " + self.account_num.rstrip(';'))
+            self.account_thread.start()
 
     def receive_trdata(self, screen_no, rqname, trcode, record_name, next, unused1, unused2, unused3, unused4):
         if rqname == "opw00004_req":
             self._opw0004(rqname, trcode)
 
     def _opw0004(self, rqname, trcode):
-        account_thread = threading.Thread(target=self.get_accountdata, args=(rqname, trcode))
-        account_thread.start()
-        print("thread started")
-
-    def get_accountdata(self, rqname, trcode):
-        balance = self.GetCommData(trcode, rqname, 0, "예수금")
+        self.account_rqname = rqname
+        self.account_trcode  = trcode
+        print("thread start " + self.account_trcode + ", " + self.account_rqname)
+        balance = self.GetCommData("OPW00004", "opw00004_req", 0, "예수금")
+        print("balance : " + balance)
         self.Balance.setText(format(int(balance), ','))
-        #account_totalbuy = self.GetCommData(trcode, rqname, 0, "총매입금액")
-        #self.Account_TotalBuy.setText(format(int(account_totalbuy), ','))
-        #account_totalestimate_tmp1 = self.GetCommData(trcode, rqname, 0, "유가잔고평가액")
-        #account_totalestimate_tmp2 = self.GetCommData(trcode, rqname, 0, "예탁자산평가액")
-        #account_totalestimate = int(account_totalestimate_tmp1) + int(account_totalestimate_tmp2)
-        #self.Account_TotalEstimate.setText(format(account_totalestimate, ','))
-        #time.sleep(1);
+        account_totalbuy = self.GetCommData(self.account_trcode, self.account_rqname, 0, "총매입금액")
+        self.Account_TotalBuy.setText(format(int(account_totalbuy), ','))
+        account_totalestimate_tmp1 = self.GetCommData(self.account_trcode, self.account_rqname, 0, "유가잔고평가액")
+        account_totalestimate_tmp2 = self.GetCommData(self.account_trcode, self.account_rqname, 0, "예탁자산평가액")
+        account_totalestimate = int(account_totalestimate_tmp1) + int(account_totalestimate_tmp2)
+        self.Account_TotalEstimate.setText(format(account_totalestimate, ','))
+
+    def update_accountdata(self):
+        self.dynamicCall("SetInputValue(QString, QString)", "계좌번호", self.account_num.rstrip(';'))
+        self.dynamicCall("SetInputValue(QString, QString)", "비밀번호", "0000")
+        self.dynamicCall("SetInputValue(QString, QString)", "상장폐지조회구분", "0")
+        self.dynamicCall("SetInputValue(QString, QString)", "비밀번호입력매체구분", "00")
+        self.dynamicCall("CommRqData(QString, QString, int, QString)", "opw00004_req", "OPW00004", 0, "0101")
+
+
+class AccountThread(QThread):
+    def __init__(self):
+        QThread.__init__(self)
+
+    def run(self):
+        while True:
+            self.finished.emit()
+            time.sleep(10)
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
+    api = Kiwoom_OpenAPI()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
