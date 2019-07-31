@@ -15,8 +15,8 @@ class Kiwoom_OpenAPI(QAxWidget):
 class Ui_MainWindow(Kiwoom_OpenAPI):
     def __init__(self):
         super().__init__()
-        self.account_thread = AccountThread()
-        self.account_thread.finished.connect(self.update_accountdata)
+        self.readonly_thread = ReadOnlyThread()
+        self.readonly_thread.finished.connect(self.update_data)
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -48,7 +48,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
 
         self.textBrowser.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser.setFont(font)
         self.textBrowser.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -73,7 +73,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_2.sizePolicy().hasHeightForWidth())
         self.textBrowser_2.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_2.setFont(font)
         self.textBrowser_2.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -98,7 +98,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_3.sizePolicy().hasHeightForWidth())
         self.textBrowser_3.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_3.setFont(font)
         self.textBrowser_3.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -123,7 +123,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_4.sizePolicy().hasHeightForWidth())
         self.textBrowser_4.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_4.setFont(font)
         self.textBrowser_4.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -148,7 +148,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_5.sizePolicy().hasHeightForWidth())
         self.textBrowser_5.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_5.setFont(font)
         self.textBrowser_5.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -173,7 +173,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_6.sizePolicy().hasHeightForWidth())
         self.textBrowser_6.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_6.setFont(font)
         self.textBrowser_6.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -198,7 +198,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_7.sizePolicy().hasHeightForWidth())
         self.textBrowser_7.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_7.setFont(font)
         self.textBrowser_7.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -223,7 +223,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_8.sizePolicy().hasHeightForWidth())
         self.textBrowser_8.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_8.setFont(font)
         self.textBrowser_8.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -248,7 +248,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_9.sizePolicy().hasHeightForWidth())
         self.textBrowser_9.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_9.setFont(font)
         self.textBrowser_9.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -273,7 +273,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_10.sizePolicy().hasHeightForWidth())
         self.textBrowser_10.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_10.setFont(font)
         self.textBrowser_10.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -444,7 +444,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_11.sizePolicy().hasHeightForWidth())
         self.textBrowser_11.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_11.setFont(font)
         self.textBrowser_11.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -469,8 +469,10 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.KOSPI_Text.sizePolicy().hasHeightForWidth())
         self.KOSPI_Text.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
+        font.setFamily("굴림")
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setWeight(75)
         self.KOSPI_Text.setFont(font)
         self.KOSPI_Text.setFocusPolicy(QtCore.Qt.NoFocus)
         self.KOSPI_Text.setAcceptDrops(False)
@@ -494,7 +496,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_13.sizePolicy().hasHeightForWidth())
         self.textBrowser_13.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_13.setFont(font)
         self.textBrowser_13.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -519,8 +521,10 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.KOSDAQ_Text.sizePolicy().hasHeightForWidth())
         self.KOSDAQ_Text.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
+        font.setFamily("굴림")
+        font.setPointSize(9)
+        font.setBold(True)
+        font.setWeight(75)
         self.KOSDAQ_Text.setFont(font)
         self.KOSDAQ_Text.setFocusPolicy(QtCore.Qt.NoFocus)
         self.KOSDAQ_Text.setAcceptDrops(False)
@@ -577,7 +581,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.RegisteredCondition.horizontalHeader().setHighlightSections(False)
         self.RegisteredCondition.horizontalHeader().setSortIndicatorShown(False)
         self.RegisteredCondition.verticalHeader().setVisible(False)
-        self.TotalBuy = QtWidgets.QTextEdit(self.widget)
+        self.TotalBuy = QtWidgets.QLineEdit(self.widget)
         self.TotalBuy.setGeometry(QtCore.QRect(110, 70, 161, 31))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -587,22 +591,16 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.TotalBuy.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.TotalBuy.setSizeIncrement(QtCore.QSize(0, 0))
         font = QtGui.QFont()
-        font.setFamily("Arial")
+        font.setFamily("굴림")
         font.setPointSize(10)
         font.setBold(False)
         font.setUnderline(False)
         font.setWeight(50)
         font.setStrikeOut(False)
         self.TotalBuy.setFont(font)
-        self.TotalBuy.setFocusPolicy(QtCore.Qt.NoFocus)
         self.TotalBuy.setInputMethodHints(QtCore.Qt.ImhDigitsOnly)
-        self.TotalBuy.setLineWidth(0)
-        self.TotalBuy.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.TotalBuy.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.TotalBuy.setAutoFormatting(QtWidgets.QTextEdit.AutoNone)
-        self.TotalBuy.setLineWrapColumnOrWidth(-1)
         self.TotalBuy.setObjectName("TotalBuy")
-        self.EachBuy = QtWidgets.QTextEdit(self.widget)
+        self.EachBuy = QtWidgets.QLineEdit(self.widget)
         self.EachBuy.setGeometry(QtCore.QRect(110, 100, 161, 31))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -610,18 +608,12 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.EachBuy.sizePolicy().hasHeightForWidth())
         self.EachBuy.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Arial")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.EachBuy.setFont(font)
-        self.EachBuy.setFocusPolicy(QtCore.Qt.NoFocus)
         self.EachBuy.setInputMethodHints(QtCore.Qt.ImhDigitsOnly)
-        self.EachBuy.setLineWidth(0)
-        self.EachBuy.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.EachBuy.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.EachBuy.setAutoFormatting(QtWidgets.QTextEdit.AutoNone)
-        self.EachBuy.setLineWrapColumnOrWidth(-1)
         self.EachBuy.setObjectName("EachBuy")
-        self.Target_Profit = QtWidgets.QTextEdit(self.widget)
+        self.Target_Profit = QtWidgets.QLineEdit(self.widget)
         self.Target_Profit.setGeometry(QtCore.QRect(370, 70, 161, 31))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -629,18 +621,12 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.Target_Profit.sizePolicy().hasHeightForWidth())
         self.Target_Profit.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Arial")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.Target_Profit.setFont(font)
-        self.Target_Profit.setFocusPolicy(QtCore.Qt.NoFocus)
         self.Target_Profit.setInputMethodHints(QtCore.Qt.ImhDigitsOnly)
-        self.Target_Profit.setLineWidth(0)
-        self.Target_Profit.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.Target_Profit.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.Target_Profit.setAutoFormatting(QtWidgets.QTextEdit.AutoNone)
-        self.Target_Profit.setLineWrapColumnOrWidth(-1)
         self.Target_Profit.setObjectName("Target_Profit")
-        self.Loss_Profit = QtWidgets.QTextEdit(self.widget)
+        self.Loss_Profit = QtWidgets.QLineEdit(self.widget)
         self.Loss_Profit.setGeometry(QtCore.QRect(370, 100, 161, 31))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -648,18 +634,12 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.Loss_Profit.sizePolicy().hasHeightForWidth())
         self.Loss_Profit.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Arial")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.Loss_Profit.setFont(font)
-        self.Loss_Profit.setFocusPolicy(QtCore.Qt.NoFocus)
         self.Loss_Profit.setInputMethodHints(QtCore.Qt.ImhDigitsOnly)
-        self.Loss_Profit.setLineWidth(0)
-        self.Loss_Profit.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.Loss_Profit.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.Loss_Profit.setAutoFormatting(QtWidgets.QTextEdit.AutoNone)
-        self.Loss_Profit.setLineWrapColumnOrWidth(-1)
         self.Loss_Profit.setObjectName("Loss_Profit")
-        self.AccountPassword = QtWidgets.QTextEdit(self.widget)
+        self.AccountPassword = QtWidgets.QLineEdit(self.widget)
         self.AccountPassword.setGeometry(QtCore.QRect(630, 40, 161, 31))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -667,17 +647,10 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.AccountPassword.sizePolicy().hasHeightForWidth())
         self.AccountPassword.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.AccountPassword.setFont(font)
-        self.AccountPassword.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.AccountPassword.setInputMethodHints(QtCore.Qt.ImhDigitsOnly)
-        self.AccountPassword.setLineWidth(0)
-        self.AccountPassword.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.AccountPassword.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.AccountPassword.setAutoFormatting(QtWidgets.QTextEdit.AutoNone)
-        self.AccountPassword.setLineWrapColumnOrWidth(-1)
-        self.AccountPassword.setPlaceholderText("")
+        self.AccountPassword.setEchoMode(QtWidgets.QLineEdit.Password)
         self.AccountPassword.setObjectName("AccountPassword")
         self.Balance = QtWidgets.QTextEdit(self.widget)
         self.Balance.setGeometry(QtCore.QRect(630, 70, 161, 31))
@@ -687,7 +660,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.Balance.sizePolicy().hasHeightForWidth())
         self.Balance.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Arial")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.Balance.setFont(font)
         self.Balance.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -710,7 +683,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.Account_TotalBuy.sizePolicy().hasHeightForWidth())
         self.Account_TotalBuy.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Arial")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.Account_TotalBuy.setFont(font)
         self.Account_TotalBuy.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -732,7 +705,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.Account_TotalEstimate.sizePolicy().hasHeightForWidth())
         self.Account_TotalEstimate.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Arial")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.Account_TotalEstimate.setFont(font)
         self.Account_TotalEstimate.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -748,7 +721,6 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.Account_TotalEstimate.setObjectName("Account_TotalEstimate")
         self.MyAccount = QtWidgets.QTableWidget(self.widget)
         self.MyAccount.setGeometry(QtCore.QRect(10, 290, 471, 271))
-        self.MyAccount.setFocusPolicy(QtCore.Qt.NoFocus)
         self.MyAccount.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.MyAccount.setObjectName("MyAccount")
         self.MyAccount.setColumnCount(5)
@@ -782,7 +754,6 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.MyAccount.verticalHeader().setVisible(False)
         self.FoundItem = QtWidgets.QTableWidget(self.widget)
         self.FoundItem.setGeometry(QtCore.QRect(480, 290, 311, 271))
-        self.FoundItem.setFocusPolicy(QtCore.Qt.NoFocus)
         self.FoundItem.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.FoundItem.setObjectName("FoundItem")
         self.FoundItem.setColumnCount(5)
@@ -800,22 +771,24 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.FoundItem.horizontalHeader().setDefaultSectionSize(62)
         self.FoundItem.horizontalHeader().setHighlightSections(False)
         self.FoundItem.verticalHeader().setVisible(False)
-        self.ConditionList = QtWidgets.QFontComboBox(self.widget)
-        self.ConditionList.setGeometry(QtCore.QRect(110, 40, 421, 31))
+        self.ConditionList = QtWidgets.QComboBox(self.widget)
+        self.ConditionList.setGeometry(QtCore.QRect(110, 40, 420, 30))
         font = QtGui.QFont()
-        font.setFamily("Arial")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.ConditionList.setFont(font)
         self.ConditionList.setCurrentText("")
         self.ConditionList.setObjectName("ConditionList")
-        self.AccountList = QtWidgets.QFontComboBox(self.widget)
-        self.AccountList.setGeometry(QtCore.QRect(630, 10, 161, 31))
+        self.ConditionList.setStyleSheet("background:rgb(255, 255, 255)")
+        self.AccountList = QtWidgets.QComboBox(self.widget)
+        self.AccountList.setGeometry(QtCore.QRect(630, 10, 163, 30))
         font = QtGui.QFont()
-        font.setFamily("Arial")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.AccountList.setFont(font)
         self.AccountList.setCurrentText("")
         self.AccountList.setObjectName("AccountList")
+        self.AccountList.setStyleSheet("background:rgb(255, 255, 255)")
         self.textBrowser_12 = QtWidgets.QTextBrowser(self.widget)
         self.textBrowser_12.setGeometry(QtCore.QRect(10, 130, 101, 31))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -824,7 +797,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.textBrowser_12.sizePolicy().hasHeightForWidth())
         self.textBrowser_12.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Agency FB")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.textBrowser_12.setFont(font)
         self.textBrowser_12.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -849,7 +822,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         sizePolicy.setHeightForWidth(self.ServerState.sizePolicy().hasHeightForWidth())
         self.ServerState.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
-        font.setFamily("Arial")
+        font.setFamily("굴림")
         font.setPointSize(10)
         self.ServerState.setFont(font)
         self.ServerState.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -882,6 +855,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         # OpenAPI+ Event
         self.OnEventConnect.connect(self.event_connect)
         self.OnReceiveTrData.connect(self.receive_trdata)
+        self.OnReceiveConditionVer.connect(self.receive_conditionver)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -889,61 +863,61 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:3pt;\"> </span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">조건식</span></p></body></html>"))
         self.textBrowser_2.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:1pt;\"> </span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">총매입금액</p></body></html>"))
         self.textBrowser_3.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:3pt;\"> </span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">종목당 매입액</span></p></body></html>"))
         self.textBrowser_4.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:3pt;\"> </span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">목표수익률</span></p></body></html>"))
         self.textBrowser_5.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:3pt;\"> </span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">손절률</span></p></body></html>"))
         self.textBrowser_6.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:3pt;\"> </span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">계좌번호</span></p></body></html>"))
         self.textBrowser_7.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:3pt;\"> </span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">비밀번호</span></p></body></html>"))
         self.textBrowser_8.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:3pt;\"> </span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">잔고</span></p></body></html>"))
         self.textBrowser_9.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:3pt;\"> </span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">총매입금액</span></p></body></html>"))
         self.textBrowser_10.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:3pt;\"> </span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">총평가금액</span></p></body></html>"))
         self.pushButton.setText(_translate("MainWindow", "시작"))
@@ -951,23 +925,23 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.textBrowser_11.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">KOSPI</span></p></body></html>"))
         self.KOSPI_Text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Agency FB\';\"><br /></p></body></html>"))
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'굴림\';\"><br /></p></body></html>"))
         self.textBrowser_13.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">KOSDAQ</span></p></body></html>"))
         self.KOSDAQ_Text.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Agency FB\';\"><br /></p></body></html>"))
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'굴림\';\"><br /></p></body></html>"))
         item = self.RegisteredCondition.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "상태"))
         item = self.RegisteredCondition.horizontalHeaderItem(1)
@@ -980,49 +954,20 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         item.setText(_translate("MainWindow", "목표수익률"))
         item = self.RegisteredCondition.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "손절률"))
-        self.TotalBuy.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Gulim\'; font-size:9pt;\"><br /></p></body></html>"))
-        self.TotalBuy.setPlaceholderText(_translate("MainWindow", "5000000"))
-        self.EachBuy.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Gulim\'; font-size:9pt;\"><br /></p></body></html>"))
-        self.EachBuy.setPlaceholderText(_translate("MainWindow", "5000000"))
-        self.Target_Profit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Gulim\'; font-size:9pt;\"><br /></p></body></html>"))
-        self.Target_Profit.setPlaceholderText(_translate("MainWindow", "10"))
-        self.Loss_Profit.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Gulim\'; font-size:9pt;\"><br /></p></body></html>"))
-        self.Loss_Profit.setPlaceholderText(_translate("MainWindow", "10"))
-        self.AccountPassword.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Gulim\'; font-size:9pt;\"><br /></p></body></html>"))
         self.Balance.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Gulim\'; font-size:9pt;\"><br /></p></body></html>"))
         self.Account_TotalBuy.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Gulim\'; font-size:9pt;\"><br /></p></body></html>"))
         self.Account_TotalEstimate.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Gulim\'; font-size:9pt;\"><br /></p></body></html>"))
         item = self.MyAccount.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "종목"))
@@ -1047,13 +992,13 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.textBrowser_12.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Agency FB\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:3pt;\"> </span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:\'Gulim\'; vertical-align:middle;\">서버상태</span></p></body></html>"))
         self.ServerState.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Arial\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:\'굴림\'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'Gulim\'; font-size:9pt;\"><br /></p></body></html>"))
 
     def event_connect(self, err_code):
@@ -1061,35 +1006,78 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
             print("로그인 성공")
             self.account_num = self.dynamicCall("GetLoginInfo(QString)", ["ACCNO"])
             print("계좌번호: " + self.account_num.rstrip(';'))
-            self.account_thread.start()
+            self.AccountList.addItem(self.account_num.rstrip(';'))
+            self.readonly_thread.start()
+            self.dynamicCall("GetConditionLoad()")
 
     def receive_trdata(self, screen_no, rqname, trcode, record_name, next, unused1, unused2, unused3, unused4):
-        if rqname == "opw00004_req":
-            self._opw0004(rqname, trcode)
+        if rqname == "Read_Account":
+            self.update_account(rqname, trcode)
+        elif rqname == "Read_KOSPI":
+            self.update_kospi(rqname, trcode)
+        elif rqname == "Read_KOSDAQ":
+            self.update_kosdaq(rqname, trcode)
 
-    def _opw0004(self, rqname, trcode):
-        self.account_rqname = rqname
-        self.account_trcode  = trcode
-        print("thread start " + self.account_trcode + ", " + self.account_rqname)
-        balance = self.GetCommData("OPW00004", "opw00004_req", 0, "예수금")
-        print("balance : " + balance)
-        self.Balance.setText(format(int(balance), ','))
-        account_totalbuy = self.GetCommData(self.account_trcode, self.account_rqname, 0, "총매입금액")
-        self.Account_TotalBuy.setText(format(int(account_totalbuy), ','))
-        account_totalestimate_tmp1 = self.GetCommData(self.account_trcode, self.account_rqname, 0, "유가잔고평가액")
-        account_totalestimate_tmp2 = self.GetCommData(self.account_trcode, self.account_rqname, 0, "예탁자산평가액")
-        account_totalestimate = int(account_totalestimate_tmp1) + int(account_totalestimate_tmp2)
-        self.Account_TotalEstimate.setText(format(account_totalestimate, ','))
+    def receive_conditionver(self, ret, msg):
+        if ret == 1:
+            self.cond_list = self.dynamicCall("GetConditionNameList()").split(';')
+            for i in self.cond_list:
+                self.cond_name = i.split('^')
+                if self.cond_name[0].strip():
+                    self.ConditionList.addItem(self.cond_name[1])
 
-    def update_accountdata(self):
+    def update_data(self):
         self.dynamicCall("SetInputValue(QString, QString)", "계좌번호", self.account_num.rstrip(';'))
         self.dynamicCall("SetInputValue(QString, QString)", "비밀번호", "0000")
         self.dynamicCall("SetInputValue(QString, QString)", "상장폐지조회구분", "0")
         self.dynamicCall("SetInputValue(QString, QString)", "비밀번호입력매체구분", "00")
-        self.dynamicCall("CommRqData(QString, QString, int, QString)", "opw00004_req", "OPW00004", 0, "0101")
+        self.dynamicCall("CommRqData(QString, QString, int, QString)", "Read_Account", "OPW00004", 0, "0101")
+
+        self.dynamicCall("SetInputValue(QString, QString)", "업종코드", "001")
+        self.dynamicCall("CommRqData(QString, QString, int, QString)", "Read_KOSPI", "opt20003"	, 0, "0101")
+        self.dynamicCall("SetInputValue(QString, QString)", "업종코드", "101")
+        self.dynamicCall("CommRqData(QString, QString, int, QString)", "Read_KOSDAQ", "opt20003", 0, "0101")
+
+    def update_account(self, rqname, trcode):
+        balance = self.GetCommData(trcode, rqname, 0, "예수금")
+        self.Balance.setText(format(int(balance), ','))
+        account_totalbuy = self.GetCommData(trcode, rqname, 0, "총매입금액")
+        self.Account_TotalBuy.setText(format(int(account_totalbuy), ','))
+        account_totalestimate_tmp1 = self.GetCommData(trcode, rqname, 0, "유가잔고평가액")
+        account_totalestimate_tmp2 = self.GetCommData(trcode, rqname, 0, "예탁자산평가액")
+        account_totalestimate = int(account_totalestimate_tmp1) + int(account_totalestimate_tmp2)
+        self.Account_TotalEstimate.setText(format(account_totalestimate, ','))
+
+    def update_kospi(self, rqname, trcode):
+        kospi = round(float(self.GetCommData(trcode, rqname, 0, "현재가").replace(" ", "")), 2)
+        diff = round(float(self.GetCommData(trcode, rqname, 0, "전일대비").replace(" ", "")), 1)
+        per = round(float(self.GetCommData(trcode, rqname, 0, "등락률").replace(" ", "")), 2)
+
+        if kospi <= 0:
+            kospi = kospi * -1
+            diff = diff * -1
+            self.KOSPI_Text.setTextColor((QtGui.QColor(0, 0, 255)))
+            self.KOSPI_Text.setText(str(format(kospi, ',')) + "  ▼" + str(diff) + "  " + str(per) + "%")
+        else:
+            self.KOSPI_Text.setTextColor((QtGui.QColor(255, 0, 0)))
+            self.KOSPI_Text.setText(str(format(kospi, ',')) + "  ▲" + str(diff) + "  " + str(per) + "%")
+
+    def update_kosdaq(self, rqname, trcode):
+        kosdaq = round(float(self.GetCommData(trcode, rqname, 0, "현재가").replace(" ", "")), 2)
+        diff = round(float(self.GetCommData(trcode, rqname, 0, "전일대비").replace(" ", "")), 2)
+        per = round(float(self.GetCommData(trcode, rqname, 0, "등락률").replace(" ", "")), 2)
+
+        if kosdaq <= 0:
+            kosdaq = kosdaq * -1
+            diff = diff * -1
+            self.KOSDAQ_Text.setTextColor((QtGui.QColor(0, 0, 255)))
+            self.KOSDAQ_Text.setText(str(format(kosdaq, ',')) + "  ▼" + str(diff) + "  " + str(per) + "%")
+        else:
+            self.KOSDAQ_Text.setTextColor((QtGui.QColor(255, 0, 0)))
+            self.KOSDAQ_Text.setText(str(format(kosdaq, ',')) + "  ▲" + str(diff) + "  " + str(per) + "%")
 
 
-class AccountThread(QThread):
+class ReadOnlyThread(QThread):
     def __init__(self):
         QThread.__init__(self)
 
