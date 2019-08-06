@@ -6,6 +6,7 @@ from PyQt5.QAxContainer import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import *
 
+
 class Kiwoom_OpenAPI(QAxWidget):
     def __init__(self):
         super().__init__()
@@ -724,7 +725,6 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.MyAccount.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.MyAccount.setObjectName("MyAccount")
         self.MyAccount.setColumnCount(5)
-        self.MyAccount.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
         font.setPointSize(10)
@@ -756,8 +756,8 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.FoundItem.setGeometry(QtCore.QRect(480, 290, 311, 271))
         self.FoundItem.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.FoundItem.setObjectName("FoundItem")
-        self.FoundItem.setColumnCount(5)
-        self.FoundItem.setRowCount(0)
+        self.FoundItem.setColumnCount(4)
+        #self.FoundItem.setRowCount(255)
         item = QtWidgets.QTableWidgetItem()
         self.FoundItem.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -766,9 +766,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.FoundItem.setHorizontalHeaderItem(2, item)
         item = QtWidgets.QTableWidgetItem()
         self.FoundItem.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.FoundItem.setHorizontalHeaderItem(4, item)
-        self.FoundItem.horizontalHeader().setDefaultSectionSize(62)
+        self.FoundItem.horizontalHeader().setDefaultSectionSize(78)
         self.FoundItem.horizontalHeader().setHighlightSections(False)
         self.FoundItem.verticalHeader().setVisible(False)
         self.ConditionList = QtWidgets.QComboBox(self.widget)
@@ -856,6 +854,11 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.OnEventConnect.connect(self.event_connect)
         self.OnReceiveTrData.connect(self.receive_trdata)
         self.OnReceiveConditionVer.connect(self.receive_conditionver)
+        self.OnReceiveTrCondition.connect(self.receive_trcondition)
+
+        self.foundcounter = 0;
+        self.condcounter = 0;
+        self.accountcounter = 0;
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -980,15 +983,14 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         item = self.MyAccount.horizontalHeaderItem(4)
         item.setText(_translate("MainWindow", "평가손익"))
         item = self.FoundItem.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "구분"))
-        item = self.FoundItem.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "종목"))
-        item = self.FoundItem.horizontalHeaderItem(2)
+        item = self.FoundItem.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "현재가"))
-        item = self.FoundItem.horizontalHeaderItem(3)
+        item = self.FoundItem.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "목표가"))
-        item = self.FoundItem.horizontalHeaderItem(4)
+        item = self.FoundItem.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "조건식"))
+
         self.textBrowser_12.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -1010,13 +1012,32 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
             self.readonly_thread.start()
             self.dynamicCall("GetConditionLoad()")
 
-    def receive_trdata(self, screen_no, rqname, trcode, record_name, next, unused1, unused2, unused3, unused4):
+    def cGetCommData(self, trcode, rqname, index, itemname):
+        while True:
+            ret = self.GetCommData(trcode, rqname, index, itemname).replace(" ", "")
+            if ret.strip():
+                break
+        return ret
+
+    def cCommRqData(self, trcode, rqname, index, itemname):
+        while True:
+            ret = str(self.CommRqData(trcode, rqname, index, itemname))
+            if ret == "-200":
+                print("sleep due to failed")
+                time.sleep(0.2)
+            else:
+                print("success break")
+                break
+
+    def receive_trdata(self, scrno, rqname, trcode, record_name, next, unused1, unused2, unused3, unused4):
         if rqname == "Read_Account":
             self.update_account(rqname, trcode)
         elif rqname == "Read_KOSPI":
             self.update_kospi(rqname, trcode)
         elif rqname == "Read_KOSDAQ":
             self.update_kosdaq(rqname, trcode)
+        elif rqname == "GetCodeInfo":
+            self.update_founditem(rqname, trcode)
 
     def receive_conditionver(self, ret, msg):
         if ret == 1:
@@ -1025,6 +1046,24 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
                 self.cond_name = i.split('^')
                 if self.cond_name[0].strip():
                     self.ConditionList.addItem(self.cond_name[1])
+                    self.dynamicCall("SendCondition(QString, QString, int, int)", self.cond_name[1], self.cond_name[1], int(self.cond_name[0]), 1)
+            #self.ConditionList.currentTextChanged.connect()
+
+    def receive_trcondition(self, scrno, codelist, cond_name, index, next):
+        print(cond_name)
+        print(codelist)
+        if not codelist.strip():
+            return
+
+        self.code_list = codelist.split(';')
+        print(self.code_list)
+        for i in self.code_list:
+            if not i.strip():
+                continue
+            strCodeName = self.GetMasterCodeName(i)
+            self.SetInputValue("종목코드", i);
+            self.cCommRqData("GetCodeInfo", "opt10001", 0, i)
+
 
     def update_data(self):
         self.dynamicCall("SetInputValue(QString, QString)", "계좌번호", self.account_num.rstrip(';'))
@@ -1034,24 +1073,41 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.dynamicCall("CommRqData(QString, QString, int, QString)", "Read_Account", "OPW00004", 0, "0101")
 
         self.dynamicCall("SetInputValue(QString, QString)", "업종코드", "001")
-        self.dynamicCall("CommRqData(QString, QString, int, QString)", "Read_KOSPI", "opt20003"	, 0, "0101")
+        self.dynamicCall("CommRqData(QString, QString, int, QString)", "Read_KOSPI", "opt20003"	, 0, "0102")
         self.dynamicCall("SetInputValue(QString, QString)", "업종코드", "101")
-        self.dynamicCall("CommRqData(QString, QString, int, QString)", "Read_KOSDAQ", "opt20003", 0, "0101")
+        self.dynamicCall("CommRqData(QString, QString, int, QString)", "Read_KOSDAQ", "opt20003", 0, "0103")
 
     def update_account(self, rqname, trcode):
-        balance = self.GetCommData(trcode, rqname, 0, "예수금")
+        balance = self.cGetCommData(trcode, rqname, 0, "예수금")
         self.Balance.setText(format(int(balance), ','))
-        account_totalbuy = self.GetCommData(trcode, rqname, 0, "총매입금액")
+        account_totalbuy = self.cGetCommData(trcode, rqname, 0, "총매입금액")
         self.Account_TotalBuy.setText(format(int(account_totalbuy), ','))
-        account_totalestimate_tmp1 = self.GetCommData(trcode, rqname, 0, "유가잔고평가액")
-        account_totalestimate_tmp2 = self.GetCommData(trcode, rqname, 0, "예탁자산평가액")
+        account_totalestimate_tmp1 = self.cGetCommData(trcode, rqname, 0, "유가잔고평가액")
+        account_totalestimate_tmp2 = self.cGetCommData(trcode, rqname, 0, "예탁자산평가액")
         account_totalestimate = int(account_totalestimate_tmp1) + int(account_totalestimate_tmp2)
         self.Account_TotalEstimate.setText(format(account_totalestimate, ','))
 
+        count = self.GetRepeatCnt(trcode, rqname)
+
+        self.MyAccount.setRowCount(count)
+        #self.MyAccount.setitem(1, 0, QTableWidgetItem("test"))
+        for i in range(0, count):
+            codename = self.cGetCommData(trcode, rqname, i, "종목명")
+            buyprice = self.cGetCommData(trcode, rqname, i, "평균단가")
+            buycount = self.cGetCommData(trcode, rqname, i, "보유수량")
+            currentprice = self.cGetCommData(trcode, rqname, i, "현재가")
+            profit = self.cGetCommData(trcode, rqname, i, "손익율")
+
+            #self.MyAccount.setitem(1, 0, QTableWidgetItem(codename))
+            #self.MyAccount.setitem(i, 1, QTableWidgetItem(buyprice))
+            #self.MyAccount.setitem(i, 2, QTableWidgetItem(buycount))
+            #self.MyAccount.setitem(i, 3, QTableWidgetItem(currentprice))
+            #self.MyAccount.setitem(i, 4, QTableWidgetItem(profit))
+
     def update_kospi(self, rqname, trcode):
-        kospi = round(float(self.GetCommData(trcode, rqname, 0, "현재가").replace(" ", "")), 2)
-        diff = round(float(self.GetCommData(trcode, rqname, 0, "전일대비").replace(" ", "")), 1)
-        per = round(float(self.GetCommData(trcode, rqname, 0, "등락률").replace(" ", "")), 2)
+        kospi = round(float(self.cGetCommData(trcode, rqname, 0, "현재가")), 1)
+        diff = round(float(self.cGetCommData(trcode, rqname, 0, "전일대비")), 1)
+        per = round(float(self.cGetCommData(trcode, rqname, 0, "등락률")), 2)
 
         if kospi <= 0:
             kospi = kospi * -1
@@ -1063,9 +1119,9 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
             self.KOSPI_Text.setText(str(format(kospi, ',')) + "  ▲" + str(diff) + "  " + str(per) + "%")
 
     def update_kosdaq(self, rqname, trcode):
-        kosdaq = round(float(self.GetCommData(trcode, rqname, 0, "현재가").replace(" ", "")), 2)
-        diff = round(float(self.GetCommData(trcode, rqname, 0, "전일대비").replace(" ", "")), 2)
-        per = round(float(self.GetCommData(trcode, rqname, 0, "등락률").replace(" ", "")), 2)
+        kosdaq = round(float(self.cGetCommData(trcode, rqname, 0, "현재가")), 2)
+        diff = round(float(self.cGetCommData(trcode, rqname, 0, "전일대비")), 2)
+        per = round(float(self.cGetCommData(trcode, rqname, 0, "등락률")), 2)
 
         if kosdaq <= 0:
             kosdaq = kosdaq * -1
@@ -1076,6 +1132,16 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
             self.KOSDAQ_Text.setTextColor((QtGui.QColor(255, 0, 0)))
             self.KOSDAQ_Text.setText(str(format(kosdaq, ',')) + "  ▲" + str(diff) + "  " + str(per) + "%")
 
+    def update_founditem(self, rqname, trcode):
+        codename = self.cGetCommData(trcode, rqname, 0, "종목명")
+        current = self.cGetCommData(trcode, rqname, 0, "현재가").replace("+", "").replace("-", "")
+
+        print(codename)
+        self.FoundItem.insertRow(self.foundcounter)
+        self.FoundItem.setItem(self.foundcounter, 0, QTableWidgetItem(codename))
+        self.FoundItem.setItem(self.foundcounter, 1, QTableWidgetItem(current))
+        self.foundcounter += 1
+        return
 
 class ReadOnlyThread(QThread):
     def __init__(self):
@@ -1084,7 +1150,7 @@ class ReadOnlyThread(QThread):
     def run(self):
         while True:
             self.finished.emit()
-            time.sleep(10)
+            time.sleep(5)
 
 
 if __name__ == "__main__":
