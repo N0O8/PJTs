@@ -751,6 +751,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         item.setFont(font)
         self.MyAccount.setHorizontalHeaderItem(4, item)
         self.MyAccount.horizontalHeader().setDefaultSectionSize(94)
+        self.MyAccount.horizontalHeader().setHighlightSections(False)
         self.MyAccount.verticalHeader().setVisible(False)
         self.FoundItem = QtWidgets.QTableWidget(self.widget)
         self.FoundItem.setGeometry(QtCore.QRect(480, 290, 311, 271))
@@ -1038,6 +1039,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
             self.update_kosdaq(rqname, trcode)
         elif rqname == "GetCodeInfo":
             self.update_founditem(rqname, trcode)
+            return
 
     def receive_conditionver(self, ret, msg):
         if ret == 1:
@@ -1064,7 +1066,6 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
             self.SetInputValue("종목코드", i);
             self.cCommRqData("GetCodeInfo", "opt10001", 0, i)
 
-
     def update_data(self):
         self.dynamicCall("SetInputValue(QString, QString)", "계좌번호", self.account_num.rstrip(';'))
         self.dynamicCall("SetInputValue(QString, QString)", "비밀번호", "0000")
@@ -1090,19 +1091,19 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         count = self.GetRepeatCnt(trcode, rqname)
 
         self.MyAccount.setRowCount(count)
-        #self.MyAccount.setitem(1, 0, QTableWidgetItem("test"))
+
         for i in range(0, count):
             codename = self.cGetCommData(trcode, rqname, i, "종목명")
-            buyprice = self.cGetCommData(trcode, rqname, i, "평균단가")
-            buycount = self.cGetCommData(trcode, rqname, i, "보유수량")
-            currentprice = self.cGetCommData(trcode, rqname, i, "현재가")
-            profit = self.cGetCommData(trcode, rqname, i, "손익율")
+            buyprice = str(round(float(self.cGetCommData(trcode, rqname, i, "평균단가")), 2))
+            buycount = str(int(self.cGetCommData(trcode, rqname, i, "보유수량")))
+            currentprice = str(int(self.cGetCommData(trcode, rqname, i, "현재가")))
+            profit = str(round(float(self.cGetCommData(trcode, rqname, i, "손익율")), 2))
 
-            #self.MyAccount.setitem(1, 0, QTableWidgetItem(codename))
-            #self.MyAccount.setitem(i, 1, QTableWidgetItem(buyprice))
-            #self.MyAccount.setitem(i, 2, QTableWidgetItem(buycount))
-            #self.MyAccount.setitem(i, 3, QTableWidgetItem(currentprice))
-            #self.MyAccount.setitem(i, 4, QTableWidgetItem(profit))
+            self.MyAccount.setItem(i, 0, QTableWidgetItem(codename))
+            self.MyAccount.setItem(i, 1, QTableWidgetItem(buyprice))
+            self.MyAccount.setItem(i, 2, QTableWidgetItem(buycount))
+            self.MyAccount.setItem(i, 3, QTableWidgetItem(currentprice))
+            self.MyAccount.setItem(i, 4, QTableWidgetItem(profit))
 
     def update_kospi(self, rqname, trcode):
         kospi = round(float(self.cGetCommData(trcode, rqname, 0, "현재가")), 1)
