@@ -13,7 +13,7 @@ mongoose.connect('mongodb://35.200.87.174:27017/stockdb', { useNewUrlParser: tru
 var Schema = mongoose.Schema;
 var stockSchema = new Schema({
 	  name: String,
-	  Date: String
+	  condition: String
 });
 
 var Stock = mongoose.model('stock', stockSchema);
@@ -24,7 +24,7 @@ module.exports = function(app)
 	    app.post('/template/create', function(req, res){
 		          var stock = new Stock({
 				            name: req.body.name,
-				            Date: req.body.date
+				            condition: req.body.condition
 				        });
 
 		          stock.save(function(err){
@@ -61,7 +61,7 @@ module.exports = function(app)
 
 	    // UPDATE
 	    app.put('/template/update', function(req, res){
-	          Stock.findOneAndUpdate({name: req.body.name}, {Date: req.body.date}, {new: true, useFindAndModify: false}, function(err, template){
+	          Stock.findOneAndUpdate({name: req.body.name}, {Date: req.body.condition}, {new: true, useFindAndModify: false}, function(err, template){
 			          if(err) return res.status(500).json({error: err});
 			          if(!template) return res.status(404).json({error: 'data not found'});
 			          res.json({message: 'data updated'});
