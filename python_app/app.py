@@ -5,6 +5,7 @@ from PyQt5.QtGui import  *
 from PyQt5.QAxContainer import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import *
+import requests, json
 
 
 class Kiwoom_OpenAPI(QAxWidget):
@@ -18,6 +19,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         super().__init__()
         self.readonly_thread = ReadOnlyThread()
         self.readonly_thread.finished.connect(self.update_data)
+        self.rest_url = 'http://localhost:3000/template'
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -856,10 +858,15 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         self.OnReceiveTrData.connect(self.receive_trdata)
         self.OnReceiveConditionVer.connect(self.receive_conditionver)
         self.OnReceiveTrCondition.connect(self.receive_trcondition)
+        self.OnReceiveRealCondition.connect(self.receive_realcondition)
+        self.OnReceiveRealData.connect(self.receive_realdata)
+        self.OnReceiveChejanData.connect(self.receive_chejandata)
 
         self.foundcounter = 0;
         self.condcounter = 0;
         self.accountcounter = 0;
+
+        self.realcode_list = []
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -1018,6 +1025,7 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
             ret = self.GetCommData(trcode, rqname, index, itemname).replace(" ", "")
             if ret.strip():
                 break
+            time.sleep(0.2)
         return ret
 
     def cCommRqData(self, trcode, rqname, index, itemname):
@@ -1029,6 +1037,14 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
             else:
                 print("success break")
                 break
+
+    def cGetCommRealData(self, code, fid):
+        while True:
+            ret = self.GetCommRealData(code, fid).replace(" ", "")
+            if ret.strip():
+                break
+            time.sleep(0.2)
+        return ret
 
     def receive_trdata(self, scrno, rqname, trcode, record_name, next, unused1, unused2, unused3, unused4):
         if rqname == "Read_Account":
@@ -1048,23 +1064,71 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
                 self.cond_name = i.split('^')
                 if self.cond_name[0].strip():
                     self.ConditionList.addItem(self.cond_name[1])
-                    self.dynamicCall("SendCondition(QString, QString, int, int)", self.cond_name[1], self.cond_name[1], int(self.cond_name[0]), 1)
+                    while True:
+                        resp = self.SendCondition(self.cond_name[1], self.cond_name[1], int(self.cond_name[0]), 1)
+                        if resp == 1:
+                            break
+                        time.sleep(0.2)
             #self.ConditionList.currentTextChanged.connect()
 
     def receive_trcondition(self, scrno, codelist, cond_name, index, next):
-        print(cond_name)
-        print(codelist)
         if not codelist.strip():
             return
 
         self.code_list = codelist.split(';')
+        print("conditionlist : ")
         print(self.code_list)
+        print("conditionlist end")
         for i in self.code_list:
             if not i.strip():
                 continue
-            strCodeName = self.GetMasterCodeName(i)
-            self.SetInputValue("종목코드", i);
-            self.cCommRqData("GetCodeInfo", "opt10001", 0, i)
+            codename = self.GetMasterCodeName(i)
+            tmp = self.SetRealReg(scrno, codename, "9001;302;10;11;12", "1")
+            print("trcode: " + scrno)
+            self.realcode_list.append(i)
+            idx = len(self.realcode_list)-1
+            self.FoundItem.insertRow(idx)
+            self.FoundItem.setItem(idx, 0, QTableWidgetItem(codename))
+            self.FoundItem.setItem(idx, 3, QTableWidgetItem(cond_name))
+            data = {'name': codename, 'condition': cond_name}
+            print(data)
+            res = requests.post('http://localhost:3000/template/create', data=json.dump(data))
+            print(res.url)
+            #self.SetInputValue("종목코드", i);
+            #self.cCommRqData("GetCodeInfo", "opt10001", 0, i)
+
+    def receive_realcondition(self, code, type, cond_name, index):
+        codename = self.GetMasterCodeName(code)
+        if type == "I":
+            #print("realcode in: " + codename)
+            ret = self.SetRealReg(cond_name, codename, "9001;302;10;11;25;12;13", "1")
+            if code not in self.realcode_list:
+                self.realcode_list.append(code)
+                idx = len(self.realcode_list) - 1
+                self.FoundItem.insertRow(idx)
+                self.FoundItem.setItem(idx, 0, QTableWidgetItem(codename))
+                self.FoundItem.setItem(idx, 3, QTableWidgetItem(cond_name))
+
+        else:
+            #print("realcode out: " + codename)
+            self.SetRealRemove(cond_name, codename)
+            idx = self.realcode_list.index(code)
+            self.FoundItem.removeRow(idx)
+            self.realcode_list.remove(code)
+
+    def receive_realdata(self, code, type, data):
+        codename = self.GetCommRealData(code, 12)
+        current = self.cGetCommRealData(code, 10).replace("+", "").replace("-", "");
+        if not type == "업종지수" and not type == "업종등락":
+            print(type)
+            print(current)
+        #strRealData = m_KOA.GetCommRealData(strCode, 10); // 현재가
+        #strRealData = m_KOA.GetCommRealData(strCode, 13); // 누적거래량
+        #strRealData = m_KOA.GetCommRealData(strCode, 228); // 체결강도
+        #strRealData = m_KOA.GetCommRealData(strCode, 20); // 체결시간
+
+    def receive_chejandata(self, gubun, itemcnt, fid):
+        print(gubun)
 
     def update_data(self):
         self.dynamicCall("SetInputValue(QString, QString)", "계좌번호", self.account_num.rstrip(';'))
@@ -1137,7 +1201,6 @@ class Ui_MainWindow(Kiwoom_OpenAPI):
         codename = self.cGetCommData(trcode, rqname, 0, "종목명")
         current = self.cGetCommData(trcode, rqname, 0, "현재가").replace("+", "").replace("-", "")
 
-        print(codename)
         self.FoundItem.insertRow(self.foundcounter)
         self.FoundItem.setItem(self.foundcounter, 0, QTableWidgetItem(codename))
         self.FoundItem.setItem(self.foundcounter, 1, QTableWidgetItem(current))
@@ -1151,7 +1214,7 @@ class ReadOnlyThread(QThread):
     def run(self):
         while True:
             self.finished.emit()
-            time.sleep(5)
+            time.sleep(20)
 
 
 if __name__ == "__main__":
